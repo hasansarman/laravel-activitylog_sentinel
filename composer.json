@@ -29,7 +29,8 @@
         "illuminate/config": "~5.5.0",
         "illuminate/database": "~5.5.0",
         "illuminate/support": "~5.5.0",
-        "spatie/string": "^2.1"
+        "spatie/string": "^2.1",
+         "cartalyst/sentinel": "~2.0"
 
     },
     "require-dev": {
