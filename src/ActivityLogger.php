@@ -45,7 +45,7 @@ class ActivityLogger
             $this->causedBy = $auth->driver($this->authDriver)->user();
         } else {
              if($config['activitylog']['default_auth_driver']=='Sentinel'){
-                $this->causedBy= \Cartalyst\Sentinel\Laravel\Facades\Sentinel::getUser()
+                $this->causedBy= \Cartalyst\Sentinel\Laravel\Facades\Sentinel::getUser();
                 
 
             }
