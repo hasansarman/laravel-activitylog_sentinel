@@ -8,7 +8,7 @@ use Spatie\Activitylog\Models\Activity;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Config\Repository;
 use Spatie\Activitylog\Exceptions\CouldNotLogActivity;
-
+use Cartalyst\Sentinel\Sentinel;
 class ActivityLogger
 {
     use Macroable;
@@ -44,6 +44,17 @@ class ActivityLogger
         if (starts_with(app()->version(), '5.1')) {
             $this->causedBy = $auth->driver($this->authDriver)->user();
         } else {
+             if($config['activitylog']['default_auth_driver']=='Sentinel'){
+                if ($user = Sentinel::check())
+                {
+                    $this->causedBy=$user;
+
+
+
+                }
+
+            }
+            else
             $this->causedBy = $auth->guard($this->authDriver)->user();
         }
 
