@@ -56,7 +56,7 @@ class Activity extends Model
             $logNames = $logNames[0];
         }
 
-        return $query->whereIn('log_name', $logNames);
+        return $query->whereIn('LOG_NAME', $logNames);
     }
 
     /**
@@ -70,8 +70,8 @@ class Activity extends Model
     public function scopeCausedBy(Builder $query, Model $causer): Builder
     {
         return $query
-            ->where('causer_type', $causer->getMorphClass())
-            ->where('causer_id', $causer->getKey());
+            ->where('CAUSER_TYPE', $causer->getMorphClass())
+            ->where('CAUSER_ID', $causer->getKey());
     }
 
     /**
@@ -85,7 +85,7 @@ class Activity extends Model
     public function scopeForSubject(Builder $query, Model $subject): Builder
     {
         return $query
-            ->where('subject_type', $subject->getMorphClass())
-            ->where('subject_id', $subject->getKey());
+            ->where('SUBJECT_TYPE', $subject->getMorphClass())
+            ->where('SUBJECT_ID', $subject->getKey());
     }
 }
