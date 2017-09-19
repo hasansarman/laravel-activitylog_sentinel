@@ -31,7 +31,7 @@ class CleanActivitylogCommand extends Command
 
         $activity = ActivitylogServiceProvider::getActivityModelInstance();
 
-        $amountDeleted = $activity::where('created_at', '<', $cutOffDate)->delete();
+        $amountDeleted = $activity::where('IDATE', '<', $cutOffDate)->delete();
 
         $this->info("Deleted {$amountDeleted} record(s) from the activity log.");
 
