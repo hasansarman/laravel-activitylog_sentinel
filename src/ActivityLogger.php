@@ -2,13 +2,15 @@
 
 namespace Spatie\Activitylog;
 
+
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Models\Activity;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Config\Repository;
 use Spatie\Activitylog\Exceptions\CouldNotLogActivity;
-use Cartalyst\Sentinel\Sentinel;
+
 class ActivityLogger
 {
     use Macroable;
@@ -45,13 +47,8 @@ class ActivityLogger
             $this->causedBy = $auth->driver($this->authDriver)->user();
         } else {
              if($config['activitylog']['default_auth_driver']=='Sentinel'){
-                if ($user = Sentinel::check())
-                {
-                    $this->causedBy=$user;
-
-
-
-                }
+                $this->causedBy= Sentinel::check();
+                
 
             }
             else
@@ -144,19 +141,22 @@ class ActivityLogger
 
         $activity = ActivitylogServiceProvider::getActivityModelInstance();
 
+       // $activity->SUBJECT_ID=$this->performedOn->ID;
+      //  $activity->SUBJECT_TYPE=$this->performedOn;
+
+
+        //$activity->SUBJECT_TYPE=$this->performedOn;
         if ($this->performedOn) {
             $activity->subject()->associate($this->performedOn);
         }
 
-        if ($this->causedBy) {
-            $activity->causer()->associate($this->causedBy);
-        }
+        $activity->causer()->associate(Sentinel::check());
 
-        $activity->properties = $this->properties;
+        $activity->PROPERTIES = $this->properties;
 
-        $activity->description = $this->replacePlaceholders($description, $activity);
+        $activity->DESCRIPTION = $this->replacePlaceholders($description, $activity);
 
-        $activity->log_name = $this->logName;
+        $activity->LOG_NAME = $this->logName;
 
         $activity->save();
 

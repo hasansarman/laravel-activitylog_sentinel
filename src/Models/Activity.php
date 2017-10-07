@@ -14,7 +14,7 @@ class Activity extends Model
     public $guarded = [];
 
     protected $casts = [
-        'properties' => 'collection',
+        'PROPERTIES' => 'collection',
     ];
 
     public function subject(): MorphTo
@@ -40,13 +40,13 @@ class Activity extends Model
      */
     public function getExtraProperty(string $propertyName)
     {
-        return array_get($this->properties->toArray(), $propertyName);
+        return array_get($this->PROPERTIES->toArray(), $propertyName);
     }
 
     public function changes(): Collection
     {
-        return collect(array_filter($this->properties->toArray(), function ($key) {
-            return in_array($key, ['attributes', 'old']);
+        return collect(array_filter($this->PROPERTIES->toArray(), function ($key) {
+            return in_array($key, ['ATTIRIBUTES', 'old']);
         }, ARRAY_FILTER_USE_KEY));
     }
 
@@ -56,7 +56,7 @@ class Activity extends Model
             $logNames = $logNames[0];
         }
 
-        return $query->whereIn('log_name', $logNames);
+        return $query->whereIn('LOG_NAME', $logNames);
     }
 
     /**
@@ -70,8 +70,8 @@ class Activity extends Model
     public function scopeCausedBy(Builder $query, Model $causer): Builder
     {
         return $query
-            ->where('causer_type', $causer->getMorphClass())
-            ->where('causer_id', $causer->getKey());
+            ->where('CAUSER_TYPE', $causer->getMorphClass())
+            ->where('CAUSER_ID', $causer->getKey());
     }
 
     /**
@@ -85,7 +85,7 @@ class Activity extends Model
     public function scopeForSubject(Builder $query, Model $subject): Builder
     {
         return $query
-            ->where('subject_type', $subject->getMorphClass())
-            ->where('subject_id', $subject->getKey());
+            ->where('SUBJECT_TYPE', $subject->getMorphClass())
+            ->where('SUBJECT_ID', $subject->getKey());
     }
 }
