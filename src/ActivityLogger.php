@@ -8,7 +8,8 @@ use Spatie\Activitylog\Models\Activity;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Config\Repository;
 use Spatie\Activitylog\Exceptions\CouldNotLogActivity;
-
+use Str;
+use Arr;
 class ActivityLogger
 {
     use Macroable;
@@ -41,7 +42,7 @@ class ActivityLogger
 
         $this->authDriver = $config['activitylog']['default_auth_driver'] ?? $auth->getDefaultDriver();
 
-        if (starts_with(app()->version(), '5.1')) {
+        if (Str::starts_with(app()->version(), '5.1')) {
             $this->causedBy = $auth->driver($this->authDriver)->user();
         } else {
              if($config['activitylog']['default_auth_driver']=='Sentinel'){
@@ -171,7 +172,7 @@ class ActivityLogger
             return $modelOrId;
         }
 
-        if (starts_with(app()->version(), '5.1')) {
+        if (Str::starts_with(app()->version(), '5.1')) {
             $model = $this->auth->driver($this->authDriver)->getProvider()->retrieveById($modelOrId);
         } else {
             $model = $this->auth->guard($this->authDriver)->getProvider()->retrieveById($modelOrId);
@@ -205,7 +206,7 @@ class ActivityLogger
 
             $attributeValue = $attributeValue->toArray();
 
-            return array_get($attributeValue, $propertyName, $match);
+            return Arr::get($attributeValue, $propertyName, $match);
         }, $description);
     }
 }
