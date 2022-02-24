@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\ActivitylogServiceProvider;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-
+use Arr;
 trait LogsActivity
 {
     use DetectsChanges;
@@ -110,7 +110,7 @@ trait LogsActivity
             return true;
         }
 
-        if (array_has($this->getDirty(), 'deleted_at')) {
+        if (Arr::has($this->getDirty(), 'deleted_at')) {
             if ($this->getDirty()['deleted_at'] === null) {
                 return false;
             }
