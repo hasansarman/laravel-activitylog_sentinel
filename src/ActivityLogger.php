@@ -42,7 +42,7 @@ class ActivityLogger
 
         $this->authDriver = $config['activitylog']['default_auth_driver'] ?? $auth->getDefaultDriver();
 
-        if (Str::starts_with(app()->version(), '5.1')) {
+        if (Str::starts(app()->version(), '5.1')) {
             $this->causedBy = $auth->driver($this->authDriver)->user();
         } else {
              if($config['activitylog']['default_auth_driver']=='Sentinel'){
